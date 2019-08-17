@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
@@ -15,9 +16,14 @@ import com.taotao.pojo.TbContent;
 import com.taotao.pojo.TbContentExample;
 import com.taotao.pojo.TbContentExample.Criteria;
 import com.taotao.service.ContentService;
+import com.taotao.utils.HttpClientUtil;
 @Service
 public class ContentServiceImpl implements ContentService {
-
+	
+	@Value("${REST_BASE_URL}")
+	private String REST_BASE_URL;//rest服务层基础url
+	@Value("${REST_CONTENT_SYNC_URL}")
+	private String REST_CONTENT_SYNC_URL;//rest服务名称
 	@Autowired
 	private  TbContentMapper  contentMapper;
 	@Override
@@ -42,6 +48,15 @@ public class ContentServiceImpl implements ContentService {
 		content.setUpdated(new Date());
 		//把内容信息添加到数据库
 		contentMapper.insert(content);
+		
+		//添加缓存同步逻辑
+		try {
+			String url=REST_BASE_URL+""+REST_CONTENT_SYNC_URL+content.getCategoryId();
+			HttpClientUtil.doGet(url);
+		} catch (Exception e) {
+			e.printStackTrace();
+			//System.out.println("ContentService.addContent中添加缓存同步逻辑失败！："+url);
+		}
 		
 		return TaotaoResult.ok();
 	}

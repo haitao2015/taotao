@@ -57,7 +57,6 @@ public class PictureServiceImpl implements PictureService {
 			// 转存文件，上传到ftp服务器
 			boolean flag =FtpUtil.uploadFile(FTP_SERVER_IP, FTP_SERVER_PORT, FTP_SERVER_USERNAME, FTP_SERVER_PASSWORD,
 					FILI_UPLOAD_PATH, filePath, newFileName, uploadFile.getInputStream());
-			System.out.println("flag="+flag);
 			result = filePath + "/" + newFileName;
 		} catch (Exception e) {
 			e.printStackTrace();
