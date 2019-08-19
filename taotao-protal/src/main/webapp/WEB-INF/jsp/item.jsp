@@ -121,7 +121,8 @@
 	    </div> 
 </div><!--brand-bar-->
 			<ul id="choose" clstag="shangpin|keycount|product|choose">
-				<li id='choose-type'></li><script type="text/javascript"> var ColorSize = [{"SkuId":1221882,"Size":"","Color":""}];</script>
+				<li id='choose-type'></li>
+				<script type="text/javascript"> var ColorSize = [{"SkuId":1221882,"Size":"","Color":""}];</script>
 								<li id="choose-amount">
 					<div class="dt">购买数量：</div>
 					<div class="dd">
@@ -221,7 +222,8 @@
 					<b></b>如果您发现商品信息不准确，欢迎纠错
 				</div>
 				<div id="item-desc" class="detail-content">
-						${itemDesc.itemDesc }
+<%-- 						${itemDesc.itemDesc } --%>
+<%-- 商品描述 --%>
 				</div>
 			</div>
 			<div class="mc hide" data-widget="tab-content" id="product-detail-2">
