@@ -1,4 +1,7 @@
 package com.taotao.common.pojo;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * 商品信息 solr
  * @author Administrator
@@ -49,6 +52,7 @@ public class Item {
 	public void setCategory_name(String category_name) {
 		this.category_name = category_name;
 	}
+	@JsonIgnore
 	public String[] getImages() {
 		if(image!=null) {
 			images=image.split(",");

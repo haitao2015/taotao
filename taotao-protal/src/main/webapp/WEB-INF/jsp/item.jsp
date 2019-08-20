@@ -136,7 +136,7 @@
 		        <li id="choose-result"><div class="dt"></div><div class="dd"></div></li>
 				<li id="choose-btns">
 					<div id="choose-btn-append"  class="btn">
-							<a class="btn-append " id="InitCartUrl" href="/cart/add/${item.id}.html" clstag="shangpin|keycount|product|initcarturl">加入购物车<b></b></a>
+							<a class="btn-append " id="InitCartUrl" href="javascript:;" onclick="itemControl.addCart()" clstag="shangpin|keycount|product|initcarturl">加入购物车<b></b></a>
 					</div>
 					<div id="choose-btn-easybuy" class="btn"></div>
 					<div id="choose-btn-divide" class="btn"></div>
@@ -264,7 +264,9 @@
 	var itemControl = {
 			param:{
 				descUrl:"/item/desc/",
-				paramUrl:"/item/param/"
+				paramUrl:"/item/param/",
+				//id="InitCartUrl" href="/cart/add/${item.id}.html" 
+				addCart:"/cart/add/"
 			},
 			//请求商品描述
 			getItemDesc:function(itemId) {
@@ -286,6 +288,10 @@
 						itemControl.haveParam = true;
 					});
 				}
+			},
+			addCart:function(itemId){
+				var num=$("#buy-num").val();
+				location.href = itemControl.param.addCart+itemId+".html?num="+num;
 			}
 	};
 	$(function(){
@@ -295,6 +301,11 @@
 		$("#p-con-attr").bind("click", function(){
 			
 			itemControl.getItemParam(itemId);
+		});
+		
+		//加入购物车
+		$("#InitCartUrl").bind("click", function(){
+			itemControl.addCart(itemId);
 		});
 		//延迟一秒加载商品描述信息
 		setTimeout(function(){
