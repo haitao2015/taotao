@@ -1,5 +1,8 @@
 package com.taotao.sso.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,19 +24,34 @@ import com.taotao.utils.ExceptionUtil;
 public class UserController {
 	@Autowired
 	private UserService userService;
-	
+	/***
+	 * 用户登录
+	 * @param username
+	 * @param password
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	@ResponseBody
-	public TaotaoResult login(String username, String password) {//只接收POST
+	public TaotaoResult login(String username, String password,HttpServletRequest 
+			request,HttpServletResponse response) {//只接收POST
 		TaotaoResult result = null;
 		try {
-			result = userService.login(username, password);
+			result = userService.login(username, password,request,response);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return TaotaoResult.build(500, ExceptionUtil.getStackTrace(e));
 		}
 		return result;
 	}
+	/***
+	 * 用户校验信息
+	 * @param param
+	 * @param type
+	 * @param callback
+	 * @return
+	 */
 	@RequestMapping("/check/{param}/{type}")
 	@ResponseBody
 	public Object checkInfo(@PathVariable String param, @PathVariable String type, String callback) {
@@ -53,7 +71,11 @@ public class UserController {
 		}
 		return result;
 	}
-	
+	/***
+	 * 用户注册
+	 * @param user
+	 * @return
+	 */
 	@RequestMapping(value="/register", method=RequestMethod.POST)
 	@ResponseBody
 	public TaotaoResult register(TbUser user) {
@@ -67,6 +89,12 @@ public class UserController {
 		}
 		return taotaoResult;
 	}
+	/***
+	 * 取用户token
+	 * @param token
+	 * @param callback
+	 * @return
+	 */
 	@RequestMapping("/token/{token}")
 	@ResponseBody
 	public Object getUserByToken(@PathVariable String token, String callback) {
@@ -86,7 +114,7 @@ public class UserController {
 		return result;
 	}
 	/**
-	 *  安全退出
+	 *  用户安全退出
 	 * @param token
 	 * @param callback
 	 * @return
@@ -109,7 +137,6 @@ public class UserController {
 		}
 		return result;
 	}
-	
 	/**
 	 * 打开login
 	 * @return
@@ -119,12 +146,13 @@ public class UserController {
 		model.addAttribute("redirect", redirect);
 		return "login";
 	}
-	
+	/**
+	 * 打开注册页
+	 * @return
+	 */
 	@RequestMapping(value={"/register", "/showRegister"})
-	
 	public String showRegister() {
 		return "register";
 	}
-	
 	
 }

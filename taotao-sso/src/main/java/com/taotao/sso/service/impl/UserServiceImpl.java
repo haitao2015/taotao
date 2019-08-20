@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +20,7 @@ import com.taotao.pojo.TbUserExample;
 import com.taotao.pojo.TbUserExample.Criteria;
 import com.taotao.sso.dao.JedisClient;
 import com.taotao.sso.service.UserService;
+import com.taotao.utils.CookieUtils;
 import com.taotao.utils.JsonUtils;
 
 @Service
@@ -32,7 +36,7 @@ public class UserServiceImpl implements UserService {
 	private Integer SESSION_EXPIRE_TIME;
 	
 	@Override
-	public TaotaoResult login(String username, String password) throws Exception {
+	public TaotaoResult login(String username, String password, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		//根据用户名查询用户信息
 		TbUserExample example = new TbUserExample();
@@ -55,6 +59,18 @@ public class UserServiceImpl implements UserService {
 		jedisClient.set(REDIS_USER_SESSION_KEY + ":" + token, JsonUtils.objectToJson(user));
 		//设置session过期时间
 		jedisClient.expire(REDIS_USER_SESSION_KEY + ":" + token, SESSION_EXPIRE_TIME);
+		
+		/***
+		 * 新增写入Cookie   cookie有效期，默认关闭浏览器失效。
+		 * 注意：页面取到这个cookie值 再去查询用户信息： reids
+		 */
+		String cookieName="TT_TOKEN";//name
+		String cookieValue=token;//value
+		CookieUtils.setCookie(request, response, cookieName, cookieValue);
+		
+		
+		
+		
 		//返回token
 		return TaotaoResult.ok(token);
 	}

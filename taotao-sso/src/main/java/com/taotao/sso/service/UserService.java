@@ -1,5 +1,8 @@
 package com.taotao.sso.service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.taotao.common.pojo.TaotaoResult;
 import com.taotao.pojo.TbUser;
 
@@ -8,10 +11,12 @@ public interface UserService {
 	 *  用户登陆
 	 * @param username
 	 * @param password
+	 * @param request 
+	 * @param response 
 	 * @return
 	 * @throws Exception
 	 */
-	TaotaoResult login(String username, String password) throws Exception;
+	TaotaoResult login(String username, String password, HttpServletRequest request, HttpServletResponse response) throws Exception;
 	
 	/***
 	 * 校验用户信息
