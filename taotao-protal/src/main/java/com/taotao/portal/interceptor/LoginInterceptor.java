@@ -40,6 +40,8 @@ public class LoginInterceptor implements HandlerInterceptor {
 			//如果取不到用户信息 返回false
 			return false;	
 		}
+		//用户信息传递到页
+		request.setAttribute("user", user);
 		// 返回值决定 handler是否执行。true 执行，false 不执行
 		//如果取到用户信息 返回true
 		return true;

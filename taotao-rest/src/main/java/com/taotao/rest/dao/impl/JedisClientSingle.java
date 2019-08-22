@@ -51,7 +51,13 @@ public class JedisClientSingle implements JedisClient{
 		jedis.close();
 		return result;
 	}
-
+	@Override
+	public long decr(String key) {
+		Jedis jedis = jedisPool.getResource();
+		Long result = jedis.decr(key);
+		jedis.close();
+		return result;
+	}
 	@Override
 	public long expire(String key, int second) {
 		Jedis jedis = jedisPool.getResource();

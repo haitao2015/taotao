@@ -35,6 +35,10 @@ public class JedisClientCluster implements  JedisClient {
 	public long incr(String key) {
 		return jedisCluster.incr(key);
 	}
+	@Override
+	public long decr(String key) {
+		return jedisCluster.decr(key);
+	}
 
 	@Override
 	public long expire(String key, int second) {

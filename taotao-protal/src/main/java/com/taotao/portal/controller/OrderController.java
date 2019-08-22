@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.taotao.pojo.TbUser;
 import com.taotao.portal.pojo.CartItem;
 import com.taotao.portal.pojo.Order;
 import com.taotao.portal.service.CartService;
@@ -42,8 +43,11 @@ public class OrderController {
 	 * 提交订单
 	 */
 	@RequestMapping("/create")
-	public String createOrder(Order order, Model model) {
+	public String createOrder(Order order, Model model,HttpServletRequest request ) {
 		try {
+			TbUser user=(TbUser)request.getAttribute("user");
+			order.setUserId(user.getId());
+			order.setBuyerNick(user.getUsername());
 			String orderId = orderService.createOrder(order);
 //			model.addAttribute("orderId", orderId);
 //			model.addAttribute("payment", order.getPayment());
